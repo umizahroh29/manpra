@@ -1,0 +1,52 @@
+body {
+	font-family: 'Roboto', sans-serif !important;
+	color: #525252;
+}
+
+.title {
+	margin: 15px 30px 0px;
+}
+
+.add {
+	padding: 30px;
+	border: 1px solid rgba(0,0,0,.1);
+	border-radius: 10px;
+}
+
+.btn-fill {
+	background-color: #219792;
+	color: white;
+}
+
+.btn-fill:hover {
+	color: #219792;
+	background-color: white;
+	border-color: #219792;
+}
+
+.btn-outline {
+	background-color: white;
+	color: #219792;
+	border-color: #219792;
+}
+
+.btn-outline:hover {
+	color: white;
+	background-color: #219792;
+	border-color: #219792;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+.invalid-message {
+    color: #d92b3d;
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-weight: bold;
+}
