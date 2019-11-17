@@ -8,6 +8,7 @@ $numSegments = count($uriSegments);
 $segment =  $uriSegments[$numSegments - 1];
 
 $auth = new AuthController();
+$practicum = new PracticumController();
 
 switch ($segment) {
     case 'login' :
@@ -24,6 +25,18 @@ switch ($segment) {
         break;
     case 'dashboard' :
         require_once('views/dashboard.php');
+        break;
+    case 'confirmation-account' :
+        $auth->confirmation();
+        break;
+    case 'confirmation-process' :
+        $auth->confirmation_process();
+        break;
+    case 'logout' :
+        $auth->logout();
+        break;
+    case 'practicum' :
+        $practicum->logout();
         break;
     default:
         http_response_code(404);

@@ -21,7 +21,6 @@ class AuthController extends Controller
      */
     public function index()
     {
-//        echo "<script>swal(\"Hello world!\");</script>";
         require_once('views/auth/login.php');
     }
 
@@ -46,14 +45,41 @@ class AuthController extends Controller
     public function register_process()
     {
         $params = $_POST;
-
         $result = $this->model->register($params);
 
-        if ($result) {
-            require_once('views/auth/login.php');
-        } else {
-            header('Location: register');
+        if ($params['password'] != $params['confirm_password']) {
+            echo "<script>Swal.fire({title: 'Gagal Registrasi', text: 'Password Tidak Sama', icon: 'error'}).then((result) => { if(result) { window.location = 'register'; } });</script>";
         }
+
+        if ($result) {
+            echo "<script>Swal.fire({title: 'Berhasil Registrasi', text: 'Silakan tunggu akun Anda dikonfirmasi oleh Admin melalui email', icon: 'success'}).then((result) => { if(result) { window.location = 'login'; } });</script>";
+        } else {
+            echo "<script>Swal.fire({title: 'Gagal Registrasi', text: '', icon: 'error'}).then((result) => { if(result) { window.location = 'register'; } });</script>";
+        }
+    }
+
+    public function logout()
+    {
+        session_start();
+        session_destroy();
+
+        header('Location: login');
+    }
+
+    public function confirmation()
+    {
+        $data = $this->model->get_unconfirmed_account();
+
+        $_SESSION['unconfirmed_data'] = $data;
+        require_once('views/auth/confirmation-account.php');
+    }
+
+    public function confirmation_process()
+    {
+        $params = $_POST;
+
+        $result = $this->model->confirmation_process($params);
+        header('Location: confirmation-account');
     }
 }
 

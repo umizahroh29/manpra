@@ -98,6 +98,10 @@ a:focus {
     background: #219792;
 }
 
+.active {
+    color: #219792;
+}
+
 #sidebar ul li.active {
     color: #219792;
 }
