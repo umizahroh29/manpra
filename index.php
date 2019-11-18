@@ -1,6 +1,7 @@
 <?php
 //include_once("config/database.php");
 include_once("controllers/AuthController.php");
+include_once("controllers/PracticumController.php");
 
 $request = $_SERVER['REQUEST_URI'];
 $uriSegments = explode("/", parse_url($request, PHP_URL_PATH));
@@ -36,7 +37,13 @@ switch ($segment) {
         $auth->logout();
         break;
     case 'practicum' :
-        $practicum->logout();
+        $practicum->index();
+        break;
+    case 'practicum-add' :
+        $practicum->create();
+        break;
+    case 'practicum-save' :
+        $practicum->create();
         break;
     default:
         http_response_code(404);

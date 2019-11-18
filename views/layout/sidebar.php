@@ -59,14 +59,14 @@ $firstname = $firstname[0];
                     <span class="pl-2">Praktikum</span>
                 </a>
                 <ul class="collapse list-unstyled" id="practicumSubmenu">
-                    <li>
-                        <a href="#">
+                    <li id="practicum-add">
+                        <a href="practicum-add">
                             <i class="far fa-file fa-lg"></i>
                             <span class="pl-2">Tambah Praktikum</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="#">
+                    <li id="practicum">
+                        <a href="practicum">
                             <i class="far fa-file fa-lg"></i>
                             <span class="pl-2">Lihat Data Praktikum</span>
                         </a>
@@ -131,11 +131,11 @@ $firstname = $firstname[0];
     </nav>
     <!-- Page Content -->
     <div id="content">
-        <nav class="navbar navbar-expand-lg">
-            <button type="button" id="sidebarCollapse" class="btn">
-                    <span class="navbar-toggler-icon">
-                        <i class="fa fa-bars fa-md" style="color:#fff;"></i>
-                    </span>
+        <nav class="navbar sticky-top navbar-expand-lg">
+            <button type="button" id="sidebarCollapse" class="btn p-0">
+                <span class="navbar-toggler-icon" style="height: auto">
+                    <i class="fa fa-bars fa-md" style="color:#fff;"></i>
+                </span>
             </button>
             <div class="collapse navbar-collapse text-body text-right">
                 <ul class="navbar-nav ml-auto col-sm-3">

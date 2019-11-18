@@ -7,6 +7,10 @@ body {
 	font-size: 12px;
 }
 
+.container form label {
+	font-size: 13px;
+}
+
 .table {
 	color: #525252;
 	font-size: 14px;
@@ -62,4 +66,15 @@ input[type=number]::-webkit-outer-spin-button {
 
 td {
 	vertical-align: middle !important;
+}
+
+.card-header {
+	background-color: #717578;
+	padding: 0.5rem 0.5rem;
+}
+
+.card-header button, .card-header button:hover {
+	color: white;
+	font-size: 14px;
+	text-decoration: none;
 }

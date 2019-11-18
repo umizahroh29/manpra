@@ -1,4 +1,5 @@
 <?php
+include_once("models/PracticumModel.php");
 
 class PracticumController
 {
@@ -19,7 +20,10 @@ class PracticumController
      */
     public function index()
     {
+        $data = $this->model->get_data_practicum();
 
+        $_SESSION['practicum_data'] = $data;
+        require_once('views/practicum/list.php');
     }
 
     /**
@@ -29,7 +33,7 @@ class PracticumController
      */
     public function create()
     {
-
+        require_once('views/practicum/add.php');
     }
 
     /**
