@@ -1,5 +1,5 @@
 <?php
-session_start();
+if (!isset($_SESSION)) session_start();
 
 $msg = isset($_SESSION['message']) ? $_SESSION['message'] : null;
 
@@ -16,7 +16,7 @@ session_destroy();
     <title>Login - ManPra</title>
 
     <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
@@ -63,6 +63,7 @@ session_destroy();
     <h6>Manajemen Praktikum</h6>
     <hr>
     <form method="POST" action="login-process">
+        <div class="mt-3 mb-3" id="user"></div>
         <div class="invalid-message"><?= $msg ?></div>
         <div class="form-group row">
             <label class="col-sm-4 col-form-label" style="text-align: right;">NIM/NIP</label>
@@ -77,6 +78,7 @@ session_destroy();
                 <input type="password" name="password" id="password" class="form-control" required>
             </div>
         </div>
+        <div class="confirm-password"></div>
         <div class="col-sm-12">
             <input type="submit" id="btnSubmit" class="btn btn-fill" value="Login">
         </div>
@@ -87,3 +89,34 @@ session_destroy();
     </div>
 </div>
 </body>
+</html>
+
+<script>
+    $(function () {
+        $('#nim').change(function () {
+            var nim = $('#nim').val();
+
+            $.ajax({
+                type: 'POST',
+                url: 'check-nim',
+                data: {nim: nim},
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    $('#user').html('Hi, ' + response.name).fadeIn();
+                    if (response.password == '' || response.password == null) {
+                        var newElement = '';
+                        newElement = newElement.concat('<div class="form-group row">');
+                        newElement = newElement.concat('<label class="col-sm-4 col-form-label">Confirm Password</label>');
+                        newElement = newElement.concat('<div class="col-sm-8">');
+                        newElement = newElement.concat('<input type="password" name="confirm-password" id="confirm-password" class="form-control" required>');
+                        newElement = newElement.concat('</div>');
+                        newElement = newElement.concat('</div>');
+
+                        $('.confirm-password').append(newElement);
+                    }
+                }
+            });
+        });
+    });
+</script>

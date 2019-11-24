@@ -1,8 +1,8 @@
 <?php
 include_once("models/AuthModel.php");
-include_once("controllers/Controller.php");
+//include_once("controllers/Controller.php");
 
-class AuthController extends Controller
+class AuthController
 {
     /**
      * Instantiate a new controller instance.
@@ -21,7 +21,12 @@ class AuthController extends Controller
      */
     public function index()
     {
-        require_once('views/auth/login.php');
+        if (!isset($_SESSION)) session_start();
+        if (isset($_SESSION['user_id'])) {
+            header('Location: dashboard');
+        } else {
+            require_once('views/auth/login.php');
+        }
     }
 
     public function login()
@@ -80,6 +85,14 @@ class AuthController extends Controller
 
         $result = $this->model->confirmation_process($params);
         header('Location: confirmation-account');
+    }
+
+    public function check_nim()
+    {
+        $nim = $_POST['nim'];
+
+        $result = $this->model->check_nim($nim);
+        echo json_encode($result);
     }
 }
 

@@ -10,6 +10,24 @@ class AuthModel
 
     function login($params)
     {
+        if (isset($params['confirm-password'])) {
+            if ($params['password'] != $params['confirm-password']) {
+                $_SESSION['message'] = '* Password dan Confirm Password Tidak Sama';
+
+                return false;
+            } else {
+                $query = "UPDATE tb_users SET password = '" . hash('md5', $params['password']) . "' WHERE nim = " . $params['nim'];
+                $ret = mysqli_query($this->connect, $query);
+
+                $this->login_process($params);
+            }
+        } else {
+            $this->login_process($params);
+        }
+    }
+
+    function login_process($params)
+    {
         $query = "SELECT * FROM tb_users WHERE nim = " . $params['nim'] . " AND password = '" . hash('md5', $params['password']) . "'";
         $ret = mysqli_query($this->connect, $query);
 
@@ -27,7 +45,7 @@ class AuthModel
             $_SESSION['user_id'] = $data['id'];
             $_SESSION['user_role'] = $data['role'];
             $_SESSION['user_code'] = $data['code'];
-            $_SESSION['user_practicum'] = $data['practicum'];
+            $_SESSION['user_practicum'] = $data['practicum_active'];
             $_SESSION['user_nim'] = $data['nim'];
 
             return true;
@@ -80,7 +98,7 @@ class AuthModel
 
     public function confirmation_process($params)
     {
-        $query = "UPDATE tb_users SET status = '". $params['status'] ."' WHERE id = " . $params['user_id'];
+        $query = "UPDATE tb_users SET status = '" . $params['status'] . "' WHERE id = " . $params['user_id'];
 
         $ret = mysqli_query($this->connect, $query);
         if ($ret > 0) {
@@ -88,6 +106,30 @@ class AuthModel
         } else {
             return false;
         }
+    }
+
+    public function check_nim($nim)
+    {
+        $query = "SELECT * FROM tb_users WHERE nim = $nim";
+
+        $ret = mysqli_query($this->connect, $query);
+
+        if ($ret->num_rows > 0) {
+            while ($row = mysqli_fetch_assoc($ret)) {
+                $data['id'] = $row['id'];
+                $data['code'] = $row['code'];
+                $data['nim'] = $row['nim'];
+                $data['name'] = $row['name'];
+                $data['class'] = $row['class'];
+                $data['email'] = $row['email'];
+                $data['status'] = $row['status'];
+                $data['password'] = $row['password'];
+            }
+
+            return $data;
+        }
+
+        return null;
     }
 }
 

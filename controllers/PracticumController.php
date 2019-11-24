@@ -20,9 +20,9 @@ class PracticumController
      */
     public function index()
     {
-        $data = $this->model->get_data_practicum();
+        $practicum_data = $this->model->get_data_practicums();
 
-        $_SESSION['practicum_data'] = $data;
+        $_SESSION['practicum_data'] = $practicum_data;
         require_once('views/practicum/list.php');
     }
 
@@ -33,6 +33,9 @@ class PracticumController
      */
     public function create()
     {
+        $lecturer_data = $this->model->get_data_lecturer();
+
+        $_SESSION['lecturer_data'] = $lecturer_data;
         require_once('views/practicum/add.php');
     }
 
@@ -43,7 +46,14 @@ class PracticumController
      */
     public function store()
     {
+        $params = $_POST;
 
+        $result = $this->model->store($params);
+        if ($result) {
+            echo "<script>Swal.fire({title: 'Praktikum Berhasil Ditambah', text: '', icon: 'success'}).then((result) => { if(result) { window.location = 'practicum'; } });</script>";
+        } else {
+            echo "<script>Swal.fire({title: 'Praktikum Gagal Ditambah', text: '', icon: 'error'}).then((result) => { if(result) { window.history.back(); } });</script>";
+        }
     }
 
     /**
@@ -53,7 +63,18 @@ class PracticumController
      */
     public function show()
     {
+        $id = $_POST['practicum_id'];
 
+        $lecturer_data = $this->model->get_data_lecturer();
+        $practicum_data = $this->model->get_data_practicum($id);
+        $practicum_detail = $this->model->get_detail_practicum($id);
+        $practicum_modules = $this->model->get_modul_practicum($id);
+
+        $_SESSION['lecturer_data'] = $lecturer_data;
+        $_SESSION['practicum_data'] = $practicum_data;
+        $_SESSION['practicum_detail'] = $practicum_detail;
+        $_SESSION['practicum_modules'] = $practicum_modules;
+        require_once('views/practicum/edit.php');
     }
 
     /**
@@ -63,17 +84,48 @@ class PracticumController
      */
     public function update()
     {
+        $params = $_POST;
 
+        $result = $this->model->update($params);
+        if ($result) {
+            echo "<script>Swal.fire({title: 'Praktikum Berhasil Diubah', text: '', icon: 'success'}).then((result) => { if(result) { window.location = 'practicum'; } });</script>";
+        } else {
+            echo "<script>Swal.fire({title: 'Praktikum Gagal Diubah', text: '', icon: 'error'}).then((result) => { if(result) { window.location = 'practicum'; } });</script>";
+        }
     }
 
     /**
-     * Remove the specified practicum
+     * Deactivate the specified practicum
      *
      * @return response
      */
-    public function destroy()
+    public function deactivate()
     {
+        $id = $_POST['practicum_id'];
 
+        $result = $this->model->deactivate($id);
+        if ($result) {
+            echo "<script>Swal.fire({title: 'Praktikum Berhasil Dinonaktifkan', text: '', icon: 'success'}).then((result) => { if(result) { window.location = 'practicum'; } });</script>";
+        } else {
+            echo "<script>Swal.fire({title: 'Praktikum Gagal Dinonaktifkan', text: '', icon: 'error'}).then((result) => { if(result) { window.location = 'practicum'; } });</script>";
+        }
+    }
+
+    /**
+     * Activate the specified practicum
+     *
+     * @return response
+     */
+    public function activate()
+    {
+        $id = $_POST['practicum_id'];
+
+        $result = $this->model->activate($id);
+        if ($result) {
+            echo "<script>Swal.fire({title: 'Praktikum Berhasil Diaktifkan', text: '', icon: 'success'}).then((result) => { if(result) { window.location = 'practicum'; } });</script>";
+        } else {
+            echo "<script>Swal.fire({title: 'Praktikum Gagal Diaktifkan', text: '', icon: 'error'}).then((result) => { if(result) { window.location = 'practicum'; } });</script>";
+        }
     }
 }
 

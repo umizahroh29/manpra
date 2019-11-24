@@ -1,19 +1,19 @@
 <?php
-$data = $_SESSION['practicum_data'];
+$user_data = $_SESSION['user_data'];
 $role = $_SESSION['user_role'];
 ?>
 
 <?php include "views/layout/sidebar.php" ?>
 
 <div class="pt-3 pl-3 pr-3 pb-0">
-    <h5>Data Praktikum</h5>
+    <h5>Data User Praktikum</h5>
 </div>
 <hr>
 
 <div class="container">
     <?php if ($role == 'Admin') { ?>
         <div class="col-sm-12 text-right" style="margin: 20px 0px 20px">
-            <a href="practicum-add" class="btn btn-fill btn-sm">+Tambah Praktikum</a>
+            <a href="import" class="btn btn-fill btn-sm">+Import</a>
         </div>
     <?php } ?>
     <div class="col-sm-12">
@@ -22,10 +22,11 @@ $role = $_SESSION['user_role'];
                 <thead>
                 <tr>
                     <th scope="col" style="vertical-align: middle; text-align: center">No</th>
-                    <th scope="col" style="vertical-align: middle; text-align: center">Nama Praktikum</th>
-                    <th scope="col" style="vertical-align: middle; text-align: center">Dosen Pengampu</th>
-                    <th scope="col" style="vertical-align: middle; text-align: center">Tahun</th>
-                    <th scope="col" style="vertical-align: middle; text-align: center">Metode Praktikum</th>
+                    <th scope="col" style="vertical-align: middle; text-align: center">Nim</th>
+                    <th scope="col" style="vertical-align: middle; text-align: center">Nama</th>
+                    <th scope="col" style="vertical-align: middle; text-align: center">Kelas</th>
+                    <th scope="col" style="vertical-align: middle; text-align: center">Kode Asisten</th>
+                    <th scope="col" style="vertical-align: middle; text-align: center">Praktikum</th>
                     <th scope="col" style="vertical-align: middle; text-align: center">Status</th>
                     <?php if ($role == 'Admin') { ?>
                         <th scope="col" style="vertical-align: middle; text-align: center" colspan="2">Action</th>
@@ -33,35 +34,35 @@ $role = $_SESSION['user_role'];
                 </tr>
                 </thead>
                 <tbody>
-                <?php if ($data != null) {
-                    foreach ($data as $row) { ?>
+                <?php if ($user_data != null) {
+                    foreach ($user_data as $row) { ?>
                         <tr>
                             <td class="text-center"><?= $row['no'] ?></td>
+                            <td class="text-center"><?= $row['nim'] ?></td>
                             <td class="text-center"><?= $row['name'] ?></td>
-                            <td class="text-center"><?= $row['lecturer_name'] ?></td>
-                            <td class="text-center"><?= $row['year'] ?></td>
-                            <td class="text-center"><?= $row['type'] ?></td>
-                            <td class="text-center"><?= $row['status_name'] ?></td>
+                            <td class="text-center"><?= $row['class'] ?></td>
+                            <td class="text-center"><?= $row['code'] ?></td>
+                            <td class="text-center"><?= $row['practicum_name'] ?></td>
+                            <td class="text-center"><?= $row['activestatus'] ?></td>
                             <?php if ($role == 'Admin') {
-                                if ($row['status'] == 'ATSAC') { ?>
+                                if ($row['activestatus'] == 'Aktif') { ?>
                                     <td class="text-center">
-                                        <form action="practicum-edit" method="post" style="margin: 0">
-                                            <input type="hidden" name="practicum_id" value="<?= $row['id'] ?>">
-                                            <input type="hidden" name="status" value="Confirmed">
+                                        <form action="user-edit" method="post" style="margin: 0">
+                                            <input type="hidden" name="user_id" value="<?= $row['id'] ?>">
                                             <button class="btn btn-outline btn-sm" type="submit">Ubah</button>
                                         </form>
                                     </td>
                                     <td class="text-center">
-                                        <form action="practicum-deactivate" method="post" style="margin: 0">
-                                            <input type="hidden" name="practicum_id" value="<?= $row['id'] ?>">
+                                        <form action="user-deactivate" method="post" style="margin: 0">
+                                            <input type="hidden" name="user_id" value="<?= $row['id'] ?>">
                                             <button class="btn btn-outline-danger btn-sm" type="submit">Non Aktif
                                             </button>
                                         </form>
                                     </td>
                                 <?php } else { ?>
                                     <td class="text-center" colspan="2">
-                                        <form action="practicum-activate" method="post" style="margin: 0">
-                                            <input type="hidden" name="practicum_id" value="<?= $row['id'] ?>">
+                                        <form action="user-activate" method="post" style="margin: 0">
+                                            <input type="hidden" name="user_id" value="<?= $row['id'] ?>">
                                             <button class="btn btn-outline-success btn-sm" type="submit">Aktifkan
                                             </button>
                                         </form>
@@ -83,8 +84,8 @@ $role = $_SESSION['user_role'];
 
 <script>
     $(function () {
-        $('#sidebar ul li#practicum a').parent().parent().toggle('show');
-        $('#sidebar ul li#practicum a').addClass('active');
+        $('#sidebar ul li#import-list a').parent().parent().toggle('show');
+        $('#sidebar ul li#import-list a').addClass('active');
     });
 </script>
 

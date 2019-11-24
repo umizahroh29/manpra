@@ -1,15 +1,22 @@
 <?php
 $lecturer_data = $_SESSION['lecturer_data'];
+$practicum_data = $_SESSION['practicum_data'];
+$practicum_detail = $_SESSION['practicum_detail'];
+$practicum_modules = $_SESSION['practicum_modules'];
 ?>
 
 <?php include "views/layout/sidebar.php" ?>
 
 <div class="pt-3 pl-3 pr-3 pb-0">
-    <h5>Tambah Praktikum</h5>
+    <h5>Ubah Praktikum</h5>
 </div>
 <hr>
 <div class="container">
-    <form action="practicum-save" method="POST">
+    <form action="practicum-update" method="POST">
+        <input type="hidden" name="id" id="id">
+        <input type="hidden" name="pretest_id" id="pretest_id">
+        <input type="hidden" name="journal_id" id="journal_id">
+        <input type="hidden" name="posttest_id" id="posttest_id">
         <div class="row">
             <div class="col-sm-6">
                 <div id="accordion">
@@ -20,6 +27,7 @@ $lecturer_data = $_SESSION['lecturer_data'];
                                 Data Praktikum
                             </button>
                         </div>
+
                         <div id="collapsePracticum" class="collapse show" aria-labelledby="practicum"
                              data-parent="#accordion">
                             <div class="card-body">
@@ -33,7 +41,7 @@ $lecturer_data = $_SESSION['lecturer_data'];
                                     <select name="lecturer" id="lecturer" class="form-control form-control-sm">
                                         <option value="">Pilih Dosen Pengampu</option>
                                         <?php foreach ($lecturer_data as $datum) { ?>
-                                        <option value="<?= $datum['code'] ?>"> <?= $datum['name'] ?></option>
+                                            <option value="<?= $datum['code'] ?>"> <?= $datum['name'] ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -52,13 +60,13 @@ $lecturer_data = $_SESSION['lecturer_data'];
                                 </div>
                                 <div class="form row">
                                     <div class="form-group col-sm-6">
-                                        <label for="pretest_pct">Persentase Tes Awal</label>
+                                        <label for="pretest_pct">Persentase Tes Awal (%)</label>
                                         <input type="text" class="form-control form-control-sm" id="pretest_pct"
                                                name="pretest_pct"
                                                required>
                                     </div>
                                     <div class="form-group col-sm-6">
-                                        <label for="pretest_duration">Durasi Tes Awal</label>
+                                        <label for="pretest_duration">Durasi Tes Awal (Menit)</label>
                                         <input type="text" class="form-control form-control-sm" id="pretest_duration"
                                                name="pretest_duration"
                                                required>
@@ -66,13 +74,13 @@ $lecturer_data = $_SESSION['lecturer_data'];
                                 </div>
                                 <div class="form row">
                                     <div class="form-group col-sm-6">
-                                        <label for="journal_pct">Persentase Jurnal</label>
+                                        <label for="journal_pct">Persentase Jurnal (%)</label>
                                         <input type="text" class="form-control form-control-sm" id="journal_pct"
                                                name="journal_pct"
                                                required>
                                     </div>
                                     <div class="form-group col-sm-6">
-                                        <label for="journal_duration">Durasi Jurnal</label>
+                                        <label for="journal_duration">Durasi Jurnal (Menit)</label>
                                         <input type="text" class="form-control form-control-sm" id="journal_duration"
                                                name="journal_duration"
                                                required>
@@ -80,13 +88,13 @@ $lecturer_data = $_SESSION['lecturer_data'];
                                 </div>
                                 <div class="form row">
                                     <div class="form-group col-sm-6">
-                                        <label for="posttest_pct">Persentase Tes Akhir</label>
+                                        <label for="posttest_pct">Persentase Tes Akhir (%)</label>
                                         <input type="text" class="form-control form-control-sm" id="posttest_pct"
                                                name="posttest_pct"
                                                required>
                                     </div>
                                     <div class="form-group col-sm-6">
-                                        <label for="posttest_duration">Durasi Tes Akhir</label>
+                                        <label for="posttest_duration">Durasi Tes Akhir (Menit)</label>
                                         <input type="text" class="form-control form-control-sm" id="posttest_duration"
                                                name="posttest_duration"
                                                required>
@@ -142,8 +150,11 @@ $lecturer_data = $_SESSION['lecturer_data'];
                                     </div>
                                 </div>
                                 <div class="form-group text-center mt-4">
-                                    <button class="btn btn-outline btn-sm" type="button" id="addModule">Tambah Modul</button>
-                                    <button class="btn btn-outline-danger btn-sm" type="button" id="removeModule">Hapus Modul</button>
+                                    <button class="btn btn-outline btn-sm" type="button" id="addModule">Tambah Modul
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm" type="button" id="removeModule">Hapus
+                                        Modul
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -164,6 +175,53 @@ $lecturer_data = $_SESSION['lecturer_data'];
 <hr>
 
 <script>
+    var practicum = '<?php echo json_encode($practicum_data) ?>';
+    var practicum_detail = '<?php echo json_encode($practicum_detail) ?>';
+    var practicum_modules = '<?php echo json_encode($practicum_modules) ?>';
+    $(function () {
+        practicum = JSON.parse(practicum);
+        practicum_detail = JSON.parse(practicum_detail);
+        practicum_modules = JSON.parse(practicum_modules);
+
+        $('#id').val(practicum.id);
+        $('#name').val(practicum.name);
+        $('#lecturer').val(practicum.lecturer_code);
+        $('#type').val(practicum.type);
+        $('#year').val(practicum.year);
+        $('#pretest_id').val(practicum_detail[0].id);
+        $('#pretest_pct').val(practicum_detail[0].grade_percentage);
+        $('#pretest_duration').val(practicum_detail[0].duration);
+        $('#journal_id').val(practicum_detail[1].id);
+        $('#journal_pct').val(practicum_detail[1].grade_percentage);
+        $('#journal_duration').val(practicum_detail[1].duration);
+        $('#posttest_id').val(practicum_detail[2].id);
+        $('#posttest_pct').val(practicum_detail[2].grade_percentage);
+        $('#posttest_duration').val(practicum_detail[2].duration);
+
+        var module_length = practicum_modules.length;
+        if (module_length > 5) {
+            for (var i = 5; i < module_length; i++) {
+                var newRow = '';
+
+                newRow = newRow.concat('<div class="form-group">');
+                newRow = newRow.concat('<label for="module' + (i + 1) + '">Modul ' + (i + 1) + '</label>');
+                newRow = newRow.concat('<input type="text" class="form-control form-control-sm" id="module' + (i + 1) + '" name="module[]">');
+                newRow = newRow.concat('</div>');
+
+                $('.module').append(newRow);
+            }
+        } else {
+            for (var i = module_length; i < 5; i++) {
+                $('#module' + (i + 1)).parent().remove();
+            }
+        }
+
+        $(practicum_modules).each(function (i) {
+            $('#module' + (i + 1)).val(practicum_modules[i]['name']);
+        });
+
+    });
+
     $(function () {
         $('#sidebar ul li#practicum-add a').parent().parent().toggle('show');
         $('#sidebar ul li#practicum-add a').addClass('active');
