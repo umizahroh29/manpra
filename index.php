@@ -147,8 +147,17 @@ switch ($segment) {
     case 'grade' :
         $grade->index();
         break;
+    case 'grade-add' :
+        $grade->create();
+        break;
     case 'grade-save' :
         $grade->store();
+        break;
+    case 'grade-export' :
+        $grade->export();
+        break;
+    case 'get-module' :
+        $grade->get_modules();
         break;
     default:
         http_response_code(404);

@@ -28,7 +28,7 @@ $role = $_SESSION['user_role'];
 
     <!-- Main Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="https://kit.fontawesome.com/907e2f35a1.js" crossorigin="anonymous"></script>
@@ -127,22 +127,31 @@ $role = $_SESSION['user_role'];
                     </li>
                 </ul>
             </li>
-            <?php if ($role == 'Assistant') { ?>
-                <li class="active">
-                    <a href="#gradeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fas fa-folder fa-lg"></i>
-                        <span class="pl-2">Nilai</span>
-                    </a>
-                    <ul class="collapse list-unstyled" id="gradeSubmenu">
-                        <li id="grade">
-                            <a href="grade">
+            <li class="active">
+                <a href="#gradeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-folder fa-lg"></i>
+                    <span class="pl-2">Nilai</span>
+                </a>
+
+                <ul class="collapse list-unstyled" id="gradeSubmenu">
+                    <?php if ($role == 'Assistant') { ?>
+                        <li id="grade-add">
+                            <a href="grade-add">
                                 <i class="far fa-file fa-lg"></i>
                                 <span class="pl-2">Input Nilai Praktikan</span>
                             </a>
                         </li>
-                    </ul>
-                </li>
-            <?php } ?>
+                    <?php } ?>
+                    <?php if ($role != 'Assistant') { ?>
+                        <li id="grade">
+                            <a href=" grade">
+                                <i class="far fa-file fa-lg"></i>
+                                <span class="pl-2">Data Nilai Praktikan</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </li>
         </ul>
     </nav>
     <!-- Page Content -->
